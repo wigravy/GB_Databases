@@ -1,79 +1,122 @@
-//------------------Table coutryandcity--------------------//
-
-CREATE TABLE IF NOT EXISTS `CountriesAndCitiesOfTheWorld`.`coutryandcity` (
-  `coutryandcityid` INT UNSIGNED NOT NULL,
-  `countryid` INT UNSIGNED NOT NULL,
-  `regionid` INT UNSIGNED NOT NULL,
-  `districtid` INT UNSIGNED NULL,
-  `cityid` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`coutryandcityid`),
-  INDEX `fk_countryid_idx` (`countryid` ASC) VISIBLE,
-  INDEX `fk_regionid_idx` (`regionid` ASC) VISIBLE,
-  INDEX `fk_districtid_idx` (`districtid` ASC) VISIBLE,
-  INDEX `fk_cityid_idx` (`cityid` ASC) VISIBLE,
-  UNIQUE INDEX `crdc` (`countryid` ASC, `regionid` ASC, `districtid` ASC, `cityid` ASC) VISIBLE,
-  CONSTRAINT `fk_cityid`
-    FOREIGN KEY (`cityid`)
-    REFERENCES `CountriesAndCitiesOfTheWorld`.`city` (`cityid`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_countryid`
-    FOREIGN KEY (`countryid`)
-    REFERENCES `CountriesAndCitiesOfTheWorld`.`country` (`countryid`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_regionid`
-    FOREIGN KEY (`regionid`)
-    REFERENCES `CountriesAndCitiesOfTheWorld`.`region` (`regionid`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_districtid`
-    FOREIGN KEY (`districtid`)
-    REFERENCES `CountriesAndCitiesOfTheWorld`.`district` (`districtid`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ALTER table `_countries`  
+drop column `title_ru`,
+drop column `title_ua`,
+drop column `title_be`,  
+drop column `title_es`,
+drop column `title_pt`,
+drop column `title_de`,
+drop column `title_fr`,
+drop column `title_it`, 
+drop column `title_pl`,
+drop column `title_ja`,
+drop column `title_lt`,
+drop column `title_lv`,
+drop column `title_cz`,
+CHANGE COLUMN `country_id` `id` INT NOT NULL AUTO_INCREMENT,
+CHANGE COLUMN `title_en` `title` VARCHAR(150) NOT NULL,
+ADD PRIMARY KEY (`id`),
+ADD INDEX `title_index` (`title` ASC) VISIBLE;
 
 
-
-//------------------Table country--------------------//
-
-CREATE TABLE IF NOT EXISTS `CountriesAndCitiesOfTheWorld`.`country` (
-  `countryid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `countryname` VARCHAR(70) NOT NULL,
-  PRIMARY KEY (`countryid`),
-  UNIQUE INDEX `countryname_UNIQUE` (`countryname` ASC) VISIBLE)
-ENGINE = InnoDB
+// <----------------------------------------------------->
 
 
+ALTER table `_regions`  
+drop column `title_ru`,
+drop column `title_ua`,
+drop column `title_be`,  
+drop column `title_es`,
+drop column `title_pt`,
+drop column `title_de`,
+drop column `title_fr`,
+drop column `title_it`, 
+drop column `title_pl`,
+drop column `title_ja`,
+drop column `title_lt`,
+drop column `title_lv`,
+drop column `title_cz`,
+CHANGE COLUMN `rigion_id` `id` INT NOT NULL AUTO_INCREMENT,
+CHANGE COLUMN `title_en` `title` VARCHAR(150) NOT NULL,
+ADD PRIMARY KEY (`id`),
+ADD INDEX `fk_regions_countries_idx` (`country_id` ASC) VISIBLE,
+ADD CONSTRAINT `fk_regions_countries`
+  FOREIGN KEY (`country_id`)
+  REFERENCES `geodata`.`_countries` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+  ADD INDEX `title_index` (`title` ASC) VISIBLE;
 
-//------------------Table region--------------------//
 
-CREATE TABLE IF NOT EXISTS `CountriesAndCitiesOfTheWorld`.`region` (
-  `regionid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `regionname` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`regionid`),
-  UNIQUE INDEX `regionname_UNIQUE` (`regionname` ASC) VISIBLE)
-ENGINE = InnoDB
+// <----------------------------------------------------->
 
 
+ALTER TABLE `geodata`.`_cities`
+DROP COLUMN `region_cz`,
+DROP COLUMN `area_cz`,
+DROP COLUMN `title_cz`,
+DROP COLUMN `region_lv`,
+DROP COLUMN `area_lv`,
+DROP COLUMN `title_lv`,
+DROP COLUMN `region_lt`,
+DROP COLUMN `area_lt`,
+DROP COLUMN `title_lt`,
+DROP COLUMN `region_ja`,
+DROP COLUMN `area_ja`,
+DROP COLUMN `title_ja`,
+DROP COLUMN `region_pl`,
+DROP COLUMN `area_pl`,
+DROP COLUMN `title_pl`,
+DROP COLUMN `region_it`,
+DROP COLUMN `area_it`,
+DROP COLUMN `title_it`,
+DROP COLUMN `region_fr`,
+DROP COLUMN `area_fr`,
+DROP COLUMN `title_fr`,
+DROP COLUMN `region_de`,
+DROP COLUMN `area_de`,
+DROP COLUMN `title_de`,
+DROP COLUMN `region_pt`,
+DROP COLUMN `area_pt`,
+DROP COLUMN `title_pt`,
+DROP COLUMN `region_es`,
+DROP COLUMN `area_es`,
+DROP COLUMN `title_es`,
+DROP COLUMN `region_ru`,
+DROP COLUMN `area_ru`,
+DROP COLUMN `title_ru`,
+DROP COLUMN `region_be`,
+DROP COLUMN `area_be`,
+DROP COLUMN `title_be`,
+DROP COLUMN `region_ua`,
+DROP COLUMN `area_ua`,
+DROP COLUMN `title_ua`,
+DROP COLUMN `region_ru`,
+DROP COLUMN `area_ru`;
 
-//------------------Table district--------------------//
 
-CREATE TABLE IF NOT EXISTS `CountriesAndCitiesOfTheWorld`.`district` (
-  `districtid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `districtname` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`districtid`),
-  UNIQUE INDEX `districtname_UNIQUE` (`districtname` ASC) VISIBLE)
-ENGINE = InnoDB
+INSERT INTO geodata.`_regions`
+(country_id, title)
+VALUES(0, 'unknown');
 
 
 
-//------------------Table city--------------------//
 
-CREATE TABLE IF NOT EXISTS `CountriesAndCitiesOfTheWorld`.`city` (
-  `cityid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cityname` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`cityid`),
-  UNIQUE INDEX `cityname_UNIQUE` (`cityname` ASC) VISIBLE)
-ENGINE = InnoDB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
