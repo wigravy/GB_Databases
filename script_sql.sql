@@ -164,23 +164,31 @@ CREATE TABLE `img_type` (
 
 
 -- В бд храним ссылку (url) на изображение. Так как максимальная длинна url не ограничена (в одной статье путем экспериментов дошли до значения 100.000), то даем ему тип text. Никакой индексации и поиска по нему не предполагается.
+
+
 CREATE TABLE `photo` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `url` text NOT NULL,
   `img_type` tinyint unsigned NOT NULL,
+  `owner` int unsigned NOT NULL,
+  `upload_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `photo_FK` (`img_type`),
-  CONSTRAINT `photo_FK` FOREIGN KEY (`img_type`) REFERENCES `img_type` (`id`)
+  KEY `photo_FK_1` (`owner`),
+  CONSTRAINT `photo_FK` FOREIGN KEY (`img_type`) REFERENCES `img_type` (`id`),
+  CONSTRAINT `photo_FK_1` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 -- Изначально была идея сделать составной индекс по типу id_user + id_comment, чтобы было больше значений. (пример 1-1, 1-2, 1-3, 2-1, 2-2). Но не решил проблему автозаполнения второго столбца (для каждого пользователя счет должен начинаться с 1) или хранить двойной ссылкой по типу вк (номерСтраницы_номерЗаписи_номерКоммента).
+
 CREATE TABLE `photo_comment` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned NOT NULL,
   `photo_id` bigint unsigned NOT NULL,
   `comment` text NOT NULL,
+  `upload_date` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `photo_comment_FK` (`user_id`),
   KEY `photo_comment_FK_1` (`photo_id`),
